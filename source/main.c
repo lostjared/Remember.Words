@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    TTF_Font *font = TTF_OpenFont("data/font.ttf", 20);
+    TTF_Font *font = TTF_OpenFont("data/font.ttf", 24);
 
     if(font == 0) {
         fprintf(stderr, "Error loading font ./data/font.ttf %s\n", SDL_GetError());
@@ -87,7 +87,12 @@ int main(int argc, char **argv) {
     
     struct Remember rem;
     rem_init(&rem);
-    rem_buildlist(&rem, "list.txt");
+    
+    if(argc >= 3)
+        rem_buildlist(&rem, argv[2]);
+    else
+        rem_buildlist(&rem, "list.txt");
+
     //rem_printlist(&rem);
     rem_genwords(&rem);
     int active = 1;
@@ -95,7 +100,7 @@ int main(int argc, char **argv) {
     unsigned int time_ticks = 0;
     unsigned int timeout = 15;
 
-    if(argc == 2) {
+    if(argc >= 2) {
         timeout = atoi(argv[1]);
     }
 
@@ -133,7 +138,7 @@ int main(int argc, char **argv) {
                          rem.count = 1;
                          rem_genwords(&rem);
                          timeout = 15;
-                         if(argc == 2) 
+                         if(argc >= 2) 
                             timeout = atoi(argv[1]);
                          break;
                      } else if(show_words == 2) {
