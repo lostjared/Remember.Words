@@ -6,7 +6,7 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
-void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y, unsigned char r, unsigned char g, unsigned char b) {
+void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y,unsigned char r, unsigned char g, unsigned char b) {
     SDL_Color color = { r, g, b };
     SDL_Surface *surface = TTF_RenderText_Solid(font,src,color);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(ren, surface);
@@ -15,6 +15,40 @@ void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y,
     SDL_RenderCopy(ren, texture, &rc_s, &rc);
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
+}
+
+void printtext_width(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
+
+    char buffer[255][4096];
+    int index = 0, pos = 0, offset = 0;
+    int len = strlen(src);
+    int width = x;
+    int advance = 0;
+    int minx,maxx,miny,maxy;
+      
+    while(pos < len) {
+        if(TTF_GlyphMetrics(font,src[pos],&minx,&maxx,&miny,&maxy,&advance)==-1)
+            printf("%s\n",TTF_GetError());
+        else {
+            if(width + advance+maxx > (w-(advance*2))) {
+                width = x;
+                buffer[index][++offset] = 0;
+                ++index;
+                offset = 0;
+            } else {
+                buffer[index][offset++] = src[pos];
+                width += advance;
+            }
+        }
+        ++pos;
+    }
+    buffer[index][offset] = 0;
+    int yy = y;
+    for (int i = 0; i <= index; ++i) {
+        if(strlen(buffer[i]) > 0)
+            printtext(ren, font, buffer[i], x, yy, r, g, b);
+        yy += maxy+advance;
+    }
 }
 
 int main(int argc, char **argv) {
@@ -54,7 +88,7 @@ int main(int argc, char **argv) {
     struct Remember rem;
     rem_init(&rem);
     rem_buildlist(&rem, "list.txt");
-    rem_printlist(&rem);
+    //rem_printlist(&rem);
     rem_genwords(&rem);
     int active = 1;
     SDL_Event e;
@@ -127,7 +161,7 @@ int main(int argc, char **argv) {
                 char buffer[1024];
                 sprintf(buffer, "Remember these %d words: (Press Space to Start)", rem.count-1);
                 printtext(ren, font, buffer, 25, 25, 255, 0, 0);
-                printtext(ren, font, rem.match_buffer, 25, 60, 0, 255, 0);
+                printtext_width(ren, font, rem.match_buffer, 25, 60, width, 0, 255, 0);
             }
                 break;
             case 1: {
@@ -149,7 +183,7 @@ int main(int argc, char **argv) {
                 break;
             case 2:
                 printtext(ren, font, "Enter the words Exactly as you saw and press Enter", 25, 25, 255, 0, 255);
-                printtext(ren, font, rem.buffer, 25, 60, 255, 255, 255);
+                printtext_width(ren, font, rem.buffer, 25, 60, width, 255, 255, 255);
                 break;
             case 3:
                 printtext(ren, font, "You are Correct! Press Space to Continue....", 25, 25, 0, 255, 255);
