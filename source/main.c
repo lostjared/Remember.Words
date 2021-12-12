@@ -30,7 +30,7 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, 
         if(TTF_GlyphMetrics(font,src[pos],&minx,&maxx,&miny,&maxy,&advance)==-1)
             printf("%s\n",TTF_GetError());
         else {
-            if(width + advance+maxx > (w-(advance*2))) {
+            if(width + advance > (w-25)) {
                 width = x;
                 buffer[index][++offset] = 0;
                 ++index;
