@@ -9,7 +9,19 @@
 void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y,unsigned char r, unsigned char g, unsigned char b) {
     SDL_Color color = { r, g, b };
     SDL_Surface *surface = TTF_RenderText_Solid(font,src,color);
+
+    if(!surface) {
+        fprintf(stderr, "Error creating surface %s\n", TTF_GetError());
+        return;
+    }
+
     SDL_Texture *texture = SDL_CreateTextureFromSurface(ren, surface);
+
+    if(!texture) {
+        fprintf(stderr, "Error creating texture: %s\n", SDL_GetError());
+        return;
+    }
+
     SDL_Rect rc = { x, y, surface->w, surface->h };
     SDL_Rect rc_s = { 0, 0, surface->w, surface->h };
     SDL_RenderCopy(ren, texture, &rc_s, &rc);
@@ -27,8 +39,10 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, 
     int minx,maxx,miny,maxy;
       
     while(pos < len) {
-        if(TTF_GlyphMetrics(font,src[pos],&minx,&maxx,&miny,&maxy,&advance)==-1)
+        if(TTF_GlyphMetrics(font,src[pos],&minx,&maxx,&miny,&maxy,&advance)==-1) {
             printf("%s\n",TTF_GetError());
+            return;
+        }
         else {
             if(width + advance > (w-25)) {
                 width = x;
