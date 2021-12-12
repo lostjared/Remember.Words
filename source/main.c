@@ -52,11 +52,21 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, 
 }
 
 int main(int argc, char **argv) {
+    printf("Program Useage:\n%s: timeout words_list.txt font_size width height\n", argv[0]);
+    int font_size = 24;
     srand((unsigned int)time(0));
-    static const int width = 1920, height = 1080;
-      if(SDL_Init(SDL_INIT_VIDEO) < 0) {
+    int width = 1920, height = 1080;
+    if(SDL_Init(SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "Error: %s\n", SDL_GetError());
         return EXIT_FAILURE;
+    }
+
+    if(argc >= 4)
+        font_size = atoi(argv[3]);
+
+    if(argc >= 6) {
+        width = atoi(argv[4]);
+        height = atoi(argv[5]);
     }
     
     TTF_Init();
@@ -68,7 +78,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    TTF_Font *font = TTF_OpenFont("data/font.ttf", 24);
+    TTF_Font *font = TTF_OpenFont("data/font.ttf", font_size);
 
     if(font == 0) {
         fprintf(stderr, "Error loading font ./data/font.ttf %s\n", SDL_GetError());
