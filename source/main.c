@@ -114,12 +114,27 @@ int main(int argc, char **argv) {
         timeout = atoi(argv[1]);
     }
 
+    SDL_StartTextInput();
+
     while(active == 1) {
         while(SDL_PollEvent(&e)) {
             switch(e.type) {
                 case SDL_QUIT:
                     active = 0;
                     break;
+
+                case SDL_TEXTINPUT: {
+                    if(show_words == 2) {
+                        for(int i = 0; i < strlen(e.text.text); ++i) {
+                            int keycode = e.text.text[i];
+                            if(isalpha(keycode) || keycode == ' ') {
+                                    rem_addchar(&rem, keycode);
+                            } 
+                        }
+                    }
+                }
+                    break;
+          
                 case SDL_KEYDOWN: {
                      if(e.key.keysym.sym == SDLK_ESCAPE) {
                          active = 0;
@@ -160,9 +175,8 @@ int main(int argc, char **argv) {
                                  show_words = 4;
                              }
                         }
-                        if(isalpha(keycode) || keycode == ' ') {
-                            rem_addchar(&rem, keycode);
-                        } else if(keycode == SDLK_BACKSPACE) {
+                       
+                       if(keycode == SDLK_BACKSPACE) {
                             rem_delchar(&rem);
                         }
                     }
