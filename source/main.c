@@ -46,23 +46,23 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *s
         }
         else {
 
-            if(maxy > max_advance)
+            if(maxy > max_y)
                 max_y = maxy;
             if(advance > max_advance)
                 max_advance = advance;
 
-            if(width + advance > (w-25)) {
+            if(width + max_advance > (w-25)) {
                 width = x;
-                buffer[index][++offset] = 0;
+                buffer[index][offset] = 0;
                 ++index;
                 offset = 0;
                 ypos += max_advance+max_y;
             } else {
-                buffer[index][offset++] = src[pos];
+                buffer[index][offset++] = src[pos++];
                 width += advance;
             }
         }
-        ++pos;
+        
     }
     buffer[index][offset] = 0;
     int yy = y;
