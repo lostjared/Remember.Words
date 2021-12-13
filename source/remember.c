@@ -5,8 +5,7 @@
 
 void rem_init(struct Remember *rem) {
     rem->pos = 0;
-    rem->buffer[0] = ' ';
-    rem->buffer[1] = 0;
+    rem->buffer[0] = 0;
     rem->match_buffer[0] = 0;
     rem->list.next = NULL;
     rem->list.buffer = NULL;
@@ -38,8 +37,7 @@ void rem_delchar(struct Remember *rem) {
     if(rem->pos > 1) {
         rem->buffer[--rem->pos] = 0;
     } else {
-        rem->buffer[0] = ' ';
-        rem->buffer[1] = 0;
+        rem->buffer[0] = 0;
     }
 }
 

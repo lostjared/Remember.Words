@@ -29,26 +29,34 @@ void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y,
     SDL_FreeSurface(surface);
 }
 
-void printtext_width(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
-
+void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *src, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
     char buffer[255][4096];
     int index = 0, pos = 0, offset = 0;
     int len = strlen(src);
     int width = x;
     int advance = 0;
     int minx,maxx,miny,maxy;
-      
+    int ypos = y;
+    static int max_advance = 0;
+    static int max_y = 0;
     while(pos < len) {
         if(TTF_GlyphMetrics(font,src[pos],&minx,&maxx,&miny,&maxy,&advance)==-1) {
             printf("%s\n",TTF_GetError());
             return;
         }
         else {
+
+            if(maxy > max_advance)
+                max_y = maxy;
+            if(advance > max_advance)
+                max_advance = advance;
+
             if(width + advance > (w-25)) {
                 width = x;
                 buffer[index][++offset] = 0;
                 ++index;
                 offset = 0;
+                ypos += max_advance+max_y;
             } else {
                 buffer[index][offset++] = src[pos];
                 width += advance;
@@ -61,7 +69,15 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, 
     for (int i = 0; i <= index; ++i) {
         if(strlen(buffer[i]) > 0)
             printtext(ren, font, buffer[i], x, yy, r, g, b);
-        yy += maxy+advance;
+        yy += max_advance+max_y;
+    }
+
+    static int flash = 0;
+    if(blink == 1 && ++flash > 15) {
+        SDL_Rect rc = {strlen(src) == 0 ? width : width+8, ypos, 8, max_y+max_advance};
+        SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
+        SDL_RenderFillRect(ren, &rc);
+        flash = 0;
     }
 }
 
@@ -198,13 +214,14 @@ int main(int argc, char **argv) {
                     break;
             }
         }
+        SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
         SDL_RenderClear(ren);
         switch(show_words) {
             case 0: {
                 char buffer[1024];
                 sprintf(buffer, "Remember these %d words: (Press Space to Start)", rem.count-1);
                 printtext(ren, font, buffer, 25, 25, 255, 0, 0);
-                printtext_width(ren, font, rem.match_buffer, 25, 60, width, 0, 255, 0);
+                printtext_width(ren, font, 0, rem.match_buffer, 25, 60, width, 0, 255, 0);
             }
                 break;
             case 1: {
@@ -226,7 +243,7 @@ int main(int argc, char **argv) {
                 break;
             case 2:
                 printtext(ren, font, "Enter the words Exactly as you saw and press Enter", 25, 25, 255, 0, 255);
-                printtext_width(ren, font, rem.buffer, 25, 60, width, 255, 255, 255);
+                printtext_width(ren, font, 1, rem.buffer, 25, 60, width, 255, 255, 255);
                 break;
             case 3:
                 printtext(ren, font, "You are Correct! Press Space to Continue....", 25, 25, 0, 255, 255);
