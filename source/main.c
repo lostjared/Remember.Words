@@ -45,7 +45,6 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *s
             return;
         }
         else {
-
             if(maxy > max_y)
                 max_y = maxy;
             if(advance > max_advance)
@@ -74,7 +73,7 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *s
 
     static int flash = 0;
     if(blink == 1 && ++flash > 15) {
-        SDL_Rect rc = {strlen(src) == 0 ? width : width+8, ypos, 8, max_y+max_advance};
+        SDL_Rect rc = {width, ypos, 8, max_y+max_advance};
         SDL_SetRenderDrawColor(ren, 255, 255, 255, 255);
         SDL_RenderFillRect(ren, &rc);
         flash = 0;

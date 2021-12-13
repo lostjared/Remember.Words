@@ -101,7 +101,6 @@ int rem_compare(struct Remember *rem) {
 
 void rem_restart(struct Remember *rem) {
     rem->pos = 0;
-    rem->buffer[0] = ' ';
-    rem->buffer[1] = 0;
+    rem->buffer[0] = 0;
     rem->match_buffer[0] = 0;
 }
