@@ -24,4 +24,5 @@ extern void rem_printlist(struct Remember *rem);
 extern void rem_genwords(struct Remember *rem);
 extern int rem_compare(struct Remember *rem);
 extern void rem_restart(struct Remember *rem);
+extern void rem_printf(struct Remember *rem, const char *format, ...);
 #endif

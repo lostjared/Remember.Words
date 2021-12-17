@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<stdarg.h>
 
 void rem_init(struct Remember *rem) {
     rem->pos = 0;
@@ -103,4 +104,14 @@ void rem_restart(struct Remember *rem) {
     rem->pos = 0;
     rem->buffer[0] = 0;
     rem->match_buffer[0] = 0;
+}
+
+void rem_printf(struct Remember *rem, const char *format, ...) {
+    char buffer[4096];
+    va_list args;
+    va_start(args, format);
+    vsprintf(buffer,format, args);
+    perror(buffer);
+    va_end(args);
+    sprintf(rem->buffer, "%s%s", rem->buffer, buffer);   
 }
