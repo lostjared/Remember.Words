@@ -25,7 +25,9 @@ void ListNode_free(struct ListNode *node) {
 }
 
 void rem_free(struct Remember *rem) {
-    free(rem->list.buffer);
+    if(rem->list.buffer != NULL)
+    free(rem->list.buffer); 
+    if(rem->list.next != NULL)
     ListNode_free(rem->list.next);
 }
 
@@ -62,7 +64,10 @@ void rem_buildlist(struct Remember *rem, const char *list_file) {
         char buffer[1024];
         if(fgets(buffer, 1024, fptr) != NULL) {
             buffer[strlen(buffer)-1] = 0;
-            node->buffer = strdup(buffer);
+            node->buffer = (char*)malloc(sizeof(char)*strlen(buffer)+1);
+            strncpy(node->buffer, buffer, strlen(buffer));
+            node->buffer[strlen(buffer)] = 0;
+            //node->buffer = strdup(buffer);
             node->next = (struct ListNode*) calloc(1, sizeof(struct ListNode));
             node->next->next = 0;
             node = node->next;
