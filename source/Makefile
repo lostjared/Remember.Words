@@ -2,7 +2,7 @@ OBJ=$(patsubst %.c,%.o,$(wildcard *.c))
 PROGRAM=Remember.Words
 CFLAGS= -std=c11 `sdl2-config --cflags`
 SDL_PATH=/usr/local/lib
-LDFLAGS= `sdl2-config --static-libs` -lz -lbz2 -lpng -lfreetype -lSDL2_ttf
+LDFLAGS= `sdl2-config --libs` -lSDL2_ttf
 %.o: %.c
 	$(CC) $(CFLAGS) $< -c -o $@
 
