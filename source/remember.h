@@ -8,7 +8,7 @@ struct ListNode {
 
 struct Remember {
     char buffer[4096];
-    char match_buffer[4096*4];
+    char match_buffer[4096];
     int pos;
     struct ListNode list;
     int count;

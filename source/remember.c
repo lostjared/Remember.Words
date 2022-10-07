@@ -91,9 +91,9 @@ void rem_genwords(struct Remember *rem) {
     for(int i = 0; i < rem->count; ++i) {
         int random = rand()%(rem->word_count-1);
        if(i > 0)
-            snprintf(rem->match_buffer, 4096, "%s %s", rem->match_buffer, gen_word(rem, random));
+            snprintf(rem->match_buffer, 4095, "%s %s", rem->match_buffer, gen_word(rem, random));
         else
-            snprintf(rem->match_buffer, 4096, "%s",gen_word(rem, random));
+            snprintf(rem->match_buffer, 4095, "%s",gen_word(rem, random));
     }
     rem->count++;
 }
