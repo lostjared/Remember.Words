@@ -81,7 +81,7 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *s
 }
 
 int main(int argc, char **argv) {
-    printf("Program Useage:\n%s: timeout words_list.txt font_size width height\n", argv[0]);
+    printf("Program Usage:\n%s: timeout words_list.txt font_size width height\n", argv[0]);
     int font_size = 24;
     srand((unsigned int)time(0));
     int width = 1920, height = 1080;
