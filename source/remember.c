@@ -112,7 +112,7 @@ void rem_restart(struct Remember *rem) {
 }
 
 void rem_printf(struct Remember *rem, const char *format, ...) {
-    char buffer[4096];
+    char buffer[4096*3];
     va_list args;
     va_start(args, format);
     vsprintf(buffer,format, args);
