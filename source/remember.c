@@ -20,15 +20,15 @@ void ListNode_free(struct ListNode *node) {
     }
     if(node->next != NULL)
         ListNode_free(node->next);
-
+    
     free(node);
 }
 
 void rem_free(struct Remember *rem) {
     if(rem->list.buffer != NULL)
-    free(rem->list.buffer); 
+        free(rem->list.buffer); 
     if(rem->list.next != NULL)
-    ListNode_free(rem->list.next);
+        ListNode_free(rem->list.next);
 }
 
 void rem_addchar(struct Remember *rem, int code) {
@@ -90,8 +90,11 @@ char *gen_word(struct Remember *rem, int index) {
 void rem_genwords(struct Remember *rem) {
     for(int i = 0; i < rem->count; ++i) {
         int random = rand()%(rem->word_count-1);
-       if(i > 0)
-            snprintf(rem->match_buffer, 4095, "%s %s", rem->match_buffer, gen_word(rem, random));
+        if(i > 0) {
+            //snprintf(rem->match_buffer, 4095, "%s %s", rem->match_buffer, gen_word(rem, random));
+            strncat(rem->match_buffer, " ", 4095);
+            strncat(rem->match_buffer, gen_word(rem, random), 4095);
+        }
         else
             snprintf(rem->match_buffer, 4095, "%s",gen_word(rem, random));
     }
