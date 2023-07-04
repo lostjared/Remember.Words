@@ -1,14 +1,14 @@
 #ifndef __REMEMBER_H__
 #define __REMEMBER_H__
-
+#define BUFFER_MAX 10000
 struct ListNode {
     char *buffer;
     struct ListNode *next;
 };
 
 struct Remember {
-    char buffer[4096];
-    char match_buffer[4096];
+    char buffer[BUFFER_MAX];
+    char match_buffer[BUFFER_MAX];
     int pos;
     struct ListNode list;
     int count;

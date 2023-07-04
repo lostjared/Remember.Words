@@ -30,7 +30,7 @@ void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y,
 }
 
 void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *src, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
-    char buffer[255][4096];
+    char buffer[255][BUFFER_MAX];
     int index = 0, pos = 0, offset = 0;
     int len = strlen(src);
     int width = x;

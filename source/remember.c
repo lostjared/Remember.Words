@@ -91,12 +91,12 @@ void rem_genwords(struct Remember *rem) {
     for(int i = 0; i < rem->count; ++i) {
         int random = rand()%(rem->word_count-1);
         if(i > 0) {
-            //snprintf(rem->match_buffer, 4095, "%s %s", rem->match_buffer, gen_word(rem, random));
-            strncat(rem->match_buffer, " ", 4095);
-            strncat(rem->match_buffer, gen_word(rem, random), 4095);
+            //snprintf(rem->match_buffer, BUFFER_MAX-1, "%s %s", rem->match_buffer, gen_word(rem, random));
+            strncat(rem->match_buffer, " ", BUFFER_MAX-1);
+            strncat(rem->match_buffer, gen_word(rem, random), BUFFER_MAX-1);
         }
         else
-            snprintf(rem->match_buffer, 4095, "%s",gen_word(rem, random));
+            snprintf(rem->match_buffer, BUFFER_MAX-1, "%s",gen_word(rem, random));
     }
     rem->count++;
 }
@@ -115,11 +115,11 @@ void rem_restart(struct Remember *rem) {
 }
 
 void rem_printf(struct Remember *rem, const char *format, ...) {
-    char buffer[4096];
+    char buffer[BUFFER_MAX];
     va_list args;
     va_start(args, format);
     vsprintf(buffer,format, args);
     perror(buffer);
     va_end(args);
-    snprintf(rem->buffer, 4096, "%s%s", rem->buffer, buffer);
+    snprintf(rem->buffer, BUFFER_MAX, "%s%s", rem->buffer, buffer);
 }
