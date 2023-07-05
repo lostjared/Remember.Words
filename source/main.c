@@ -19,6 +19,7 @@
 #include "SDL.h"
 #include "SDL_ttf.h"
 
+/* print text to the window */
 void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y,unsigned char r, unsigned char g, unsigned char b) {
     SDL_Color color = { r, g, b };
     SDL_Surface *surface = TTF_RenderText_Solid(font,src,color);
@@ -41,7 +42,7 @@ void printtext(SDL_Renderer *ren, TTF_Font *font, const char *src, int x, int y,
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
 }
-
+/* print text based on how wide the string is to wrap around */
 void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *src, int x, int y, int w, unsigned char r, unsigned char g, unsigned char b) {
     char buffer[255][BUFFER_MAX];
     int index = 0, pos = 0, offset = 0;
@@ -92,7 +93,7 @@ void printtext_width(SDL_Renderer *ren, TTF_Font *font, int blink, const char *s
         flash = 0;
     }
 }
-
+/* main function - entry point */
 int main(int argc, char **argv) {
     printf("Program Usage:\n%s: timeout words_list.txt font_size width height\n", argv[0]);
     int font_size = 24;

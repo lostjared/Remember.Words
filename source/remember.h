@@ -15,11 +15,14 @@
 #ifndef __REMEMBER_H__
 #define __REMEMBER_H__
 #define BUFFER_MAX 10000
+
+/* linked list structure to contain each word */
 struct ListNode {
     char *buffer;
     struct ListNode *next;
 };
 
+/* remember structure to contain typed data and the built word to match against */
 struct Remember {
     char buffer[BUFFER_MAX];
     char match_buffer[BUFFER_MAX];
@@ -29,6 +32,11 @@ struct Remember {
     int word_count;
 };
 
+/*
+ functions to manipulate the Remember structure
+ initalize, free, add a character, delete a char, build the list
+ print the list, gen words, compare, start over, and print
+ */
 extern void rem_init(struct Remember *rem);
 extern void rem_free(struct Remember *rem);
 extern void rem_addchar(struct Remember *rem, int code);

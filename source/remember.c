@@ -17,6 +17,7 @@
 #include<string.h>
 #include<stdarg.h>
 
+/* initalize Rmember structure */
 void rem_init(struct Remember *rem) {
     rem->pos = 0;
     rem->buffer[0] = 0;
@@ -27,6 +28,7 @@ void rem_init(struct Remember *rem) {
     rem->word_count = 0;
 }
 
+/* free linked list node */
 void ListNode_free(struct ListNode *node) {
     if(node->buffer != NULL) {
         free(node->buffer);
@@ -37,6 +39,7 @@ void ListNode_free(struct ListNode *node) {
     free(node);
 }
 
+/* free Remember structure */
 void rem_free(struct Remember *rem) {
     if(rem->list.buffer != NULL)
         free(rem->list.buffer); 
@@ -44,11 +47,13 @@ void rem_free(struct Remember *rem) {
         ListNode_free(rem->list.next);
 }
 
+/* add cahracter to buffer */
 void rem_addchar(struct Remember *rem, int code) {
     rem->buffer[rem->pos++] = code;
     rem->buffer[rem->pos] = 0;
 }
 
+/* delete a character from the buffer */
 void rem_delchar(struct Remember *rem) {
     if(rem->pos > 1) {
         rem->buffer[--rem->pos] = 0;
@@ -57,6 +62,7 @@ void rem_delchar(struct Remember *rem) {
     }
 }
 
+/* print the list to stdout */
 void rem_printlist(struct Remember *rem) {
     struct ListNode *node = &rem->list;
     while(node != NULL) {
@@ -65,7 +71,7 @@ void rem_printlist(struct Remember *rem) {
         node = node->next;
     }
 }
-
+/* build the list from a text file one word per line */
 void rem_buildlist(struct Remember *rem, const char *list_file) {
     FILE *fptr = fopen(list_file, "r");
     if(!fptr) {
@@ -89,6 +95,7 @@ void rem_buildlist(struct Remember *rem, const char *list_file) {
     fclose(fptr);
 }
 
+/* gen a word from the linked list */
 char *gen_word(struct Remember *rem, int index) {
     struct ListNode *node = &rem->list;
     int i = 0;
@@ -98,7 +105,7 @@ char *gen_word(struct Remember *rem, int index) {
     }
     return node->buffer;
 }
-
+/* gen words for comparaision */
 void rem_genwords(struct Remember *rem) {
     for(int i = 0; i < rem->count; ++i) {
         int random = rand()%(rem->word_count-1);
@@ -111,20 +118,20 @@ void rem_genwords(struct Remember *rem) {
     }
     rem->count++;
 }
-
+/* compare words */
 int rem_compare(struct Remember *rem) {
     if(strcmp(rem->buffer, rem->match_buffer) == 0) {
         return 1;
     }
     return 0;
 }
-
+/* restart */
 void rem_restart(struct Remember *rem) {
     rem->pos = 0;
     rem->buffer[0] = 0;
     rem->match_buffer[0] = 0;
 }
-
+/* varaiable argument printf to on screen buffer */
 void rem_printf(struct Remember *rem, const char *format, ...) {
     char buffer[BUFFER_MAX];
     va_list args;
