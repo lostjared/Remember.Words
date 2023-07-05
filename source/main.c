@@ -1,3 +1,16 @@
+/*
+ 
+ Remember Words, memory game
+ 
+ I used to play this game with my speech therapist after being in a coma
+ and having to learn how to speak again. Helps with memory recall
+ so I decided to code it into a computer program.
+ 
+ Hope this can help anyone
+ 
+ - Jared
+ 
+*/
 #include<stdio.h>
 #include<stdlib.h>
 #include<ctype.h>
