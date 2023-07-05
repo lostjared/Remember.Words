@@ -67,7 +67,6 @@ void rem_buildlist(struct Remember *rem, const char *list_file) {
             node->buffer = (char*)malloc(sizeof(char)*strlen(buffer)+1);
             strncpy(node->buffer, buffer, strlen(buffer));
             node->buffer[strlen(buffer)] = 0;
-            //node->buffer = strdup(buffer);
             node->next = (struct ListNode*) calloc(1, sizeof(struct ListNode));
             node->next->next = 0;
             node = node->next;
@@ -91,7 +90,6 @@ void rem_genwords(struct Remember *rem) {
     for(int i = 0; i < rem->count; ++i) {
         int random = rand()%(rem->word_count-1);
         if(i > 0) {
-            //snprintf(rem->match_buffer, BUFFER_MAX-1, "%s %s", rem->match_buffer, gen_word(rem, random));
             strncat(rem->match_buffer, " ", BUFFER_MAX-1);
             strncat(rem->match_buffer, gen_word(rem, random), BUFFER_MAX-1);
         }
