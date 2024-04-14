@@ -17,6 +17,18 @@
 #include<string.h>
 #include<stdarg.h>
 
+
+void safe_append(char *dest, const char *src, size_t dest_size) {
+    char temp[dest_size];
+    if (strlen(dest) + strlen(src) + 1 > dest_size) {
+        fprintf(stderr, "Error: buffer overflow prevented\n");
+        return;
+    }
+    snprintf(temp, sizeof(temp), "%s%s", dest, src);
+    snprintf(dest, dest_size, "%s", temp);
+}
+
+
 /* initalize Rmember structure */
 void rem_init(struct Remember *rem) {
     rem->pos = 0;
@@ -139,5 +151,5 @@ void rem_printf(struct Remember *rem, const char *format, ...) {
     vsprintf(buffer,format, args);
     perror(buffer);
     va_end(args);
-    snprintf(rem->buffer, BUFFER_MAX, "%s%s", rem->buffer, buffer);
+    safe_append(rem->buffer, buffer, BUFFER_MAX);
 }
